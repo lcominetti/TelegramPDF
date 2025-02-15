@@ -1,4 +1,4 @@
-name: Birrificio Schedule
+name: Manual Birrificio Schedule
 
 on:
   schedule:
