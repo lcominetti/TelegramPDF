@@ -2,8 +2,8 @@ name: Iperal Schedule
 
 on:
   schedule:
-    # Runs every Monday at 12 PM
-    - cron: '0 12 * * 1'
+    # Runs every Monday at 12:30 PM
+    - cron: '30 12 * * 1'
 
 jobs:
   run-script:
