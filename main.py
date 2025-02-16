@@ -27,11 +27,19 @@ IPERAL_PDF_LINK = os.getenv(
 
 def check_emails():
     """
-    Checks for unseen emails from a specific sender and loads attachments in memory.
+    Fetch unseen emails from a specific sender and extract attachments.
+
+    This function connects to an IMAP email server, searches for unseen emails from a
+    specific sender, decodes attachment filenames and content, and retrieves the email
+    subjects along with the attachments. After processing, the function marks the emails
+    as seen.
+
     Returns:
-        (attachments, email_subject):
-            attachments (list): list of tuples (filename, file_bytes).
-            email_subject (str): Subject of the email found (if any).
+        tuple: A tuple containing:
+            attachments (list): A list of tuples, where each tuple contains the filename
+                (str) and the content (bytes) of an attachment.
+            email_subject (Optional[str]): The subject of the most recently processed email,
+                or None if no email was successfully processed.
     """
     attachments = []
     email_subject = None
@@ -83,8 +91,17 @@ def check_emails():
 
 def send_document_to_telegram(attachments):
     """
-    Sends a list of in-memory file attachments to a specified Telegram channel.
-    Attachments should be a list of tuples (filename, file_bytes).
+    Sends a list of file attachments to a Telegram bot's channel using the
+    Telegram Bot API. Each attachment is sent as a document.
+
+    Args:
+        attachments (list of tuple): A list of tuples where each tuple contains
+            the filename (str) and file bytes (bytes) to be sent as an
+            attachment.
+
+    Raises:
+        ValueError: If the request to Telegram's API fails with a non-200
+            status code.
     """
     # Send file attachments
     for filename, file_bytes in attachments:
@@ -99,6 +116,17 @@ def send_document_to_telegram(attachments):
 
 
 def send_msg_to_telegram_channel(msg_text):
+    """
+    Sends a message to a Telegram channel using the Telegram Bot API.
+
+    This function sends a text message to a specific Telegram channel using the `sendMessage`
+    endpoint of the Telegram Bot API. The bot token and the channel ID used in this function
+    should already be configured as environment variables or constants. If the API call
+    fails, the error response is printed.
+
+    Args:
+        msg_text: The message text to be sent to the Telegram channel.
+    """
     response = requests.post(
         f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
         data={"chat_id": TELEGRAM_CHANNEL_ID, "text": msg_text},
@@ -109,8 +137,17 @@ def send_msg_to_telegram_channel(msg_text):
 
 def check_and_send():
     """
-    Checks emails from a specific sender. If any attachments are found,
-    they are sent directly to the configured Telegram channel without saving to disk.
+    check_and_send()
+    Checks for new emails, processes attachments, and sends them to a specified
+    Telegram channel. If an email subject exists, it is formatted and sent as a
+    text message to the channel. This function ensures timely notification and
+    sharing of relevant email content.
+
+    Raises:
+        Any exception that might occur during the checking and sending of emails
+        process will depend on the implementations of the underlying functions
+        such as `check_emails()`, `send_msg_to_telegram_channel`, or
+        `send_document_to_telegram`.
     """
     attachments, email_subject = check_emails()
     if attachments:
@@ -127,7 +164,13 @@ def check_and_send():
 
 def check_and_send_iperal():
     """
-    Fetches a PDF from a fixed link and sends it to the Telegram channel.
+    Checks the availability of a PDF file from the given URL and sends it to a Telegram
+    channel if successfully fetched. The function appends the current Unix time to avoid
+    cached results, formats a message with the current date, and sends the PDF
+    document and the message to the specified Telegram channel.
+
+    Raises:
+        HTTPError: If the HTTP request from the provided URL fails.
     """
     # Gets the Unix time to append to the URL to avoid getting cached results
     unix_time = int(datetime.now().timestamp())
