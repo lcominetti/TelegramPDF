@@ -1,5 +1,4 @@
 # Email and PDF Telegram Integration Bot
-This project enables automated extraction of menus, PDFs, or other documents from emails and websites, which can then be sent to a Telegram channel for dissemination or sharing. The system is configurable and extensible, allowing for a variety of use cases, such as handling different types of documents and sources beyond menus.
 
 ## Features
 1. **Email Monitoring**:
@@ -60,11 +59,11 @@ Fetch the Iperal menu PDF and send it to a Telegram chat.
 ### Example Usage
 To check for emails and send attachments:
 ``` bash
-python your_script.py --birri
+python main.py --birri
 ```
 To fetch and send the Iperal menu PDF:
 ``` bash
-python your_script.py --iperal
+python main.py --iperal
 ```
 If no argument is provided, the script will display a message prompting the user to specify an action.
 ## Key Functions
@@ -128,3 +127,5 @@ Collect promotional material (e.g., brochures in PDF format) from emails or webs
 Ensure sensitive information (like email passwords or bot tokens) is stored securely, preferably in environment variables or a secure vault.
 2. **Error Handling**:
 Robust error handling is implemented, but be aware of dynamic content changes that may require updating filtering logic or configurations.
+3. **IMAP Communication**:
+Many email providers have disabled access using username and password, make sure to generate an app password to allow this program to work
