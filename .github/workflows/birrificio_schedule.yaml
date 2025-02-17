@@ -36,4 +36,4 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
       run: |
-        python main.py -i
+        python main.py -b
