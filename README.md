@@ -116,7 +116,7 @@ python main.py --i
 ```
 ## Example Use Cases
 1. **Weekly Menu Delivery**:
-Automatically fetch weekly menus sent via email and share them in a workgroup Telegram channel.
+Automatically fetch weekly menus sent via email and share them in a workgroup Telegram channel. This is the current use case and it's available at https://t.me/MenuSOSI.
 2. **Report Distribution**:
 Fetch reports or PDF documents from an external system or email, and automate their delivery to teams or stakeholders through Telegram.
 3. **Promotional Notifications**:
